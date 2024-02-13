@@ -14,9 +14,7 @@ public class Program
     public static void Main()
     {
         Console.WriteLine("Hello From Main...I Don't Do Anything");
-
     }
-
 }
 
 [System.ComponentModel.RunInstaller(true)]
@@ -26,11 +24,11 @@ public class Sample : System.Configuration.Install.Installer
     {
         string outputFilePath = @"C:\temp\ps.out"; // Output file path
 
+        Runspace runspace = RunspaceFactory.CreateRunspace();
+        runspace.Open();
+
         using (StreamWriter writer = new StreamWriter(outputFilePath, true))
         {
-            Runspace runspace = RunspaceFactory.CreateRunspace();
-            runspace.Open();
-
             while (true)
             {
                 Console.Write(">");
@@ -50,12 +48,14 @@ public class Sample : System.Configuration.Install.Installer
                     string output = stringBuilder.ToString().Trim();
                     Console.WriteLine(output); // Output to console
                     writer.WriteLine(output); // Write to file
+                    writer.Flush(); // Flush content to ensure it's written immediately
                 }
                 catch (Exception e)
                 {
                     string errorMessage = e.ToString();
                     Console.WriteLine(errorMessage); // Output error to console
                     writer.WriteLine(errorMessage); // Write error to file
+                    writer.Flush(); // Flush content to ensure it's written immediately
                 }
             }
         }
