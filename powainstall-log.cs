@@ -39,8 +39,15 @@ public class Sample : System.Configuration.Install.Installer
             while (true)
             {
                 Console.Write(">");
-                Pipeline pipeline = runspace.CreatePipeline();
                 string cmd = Console.ReadLine();
+
+                if (cmd.ToLower() == "exit")
+                {
+                    Console.WriteLine("Session ended.");
+                    break;
+                }
+
+                Pipeline pipeline = runspace.CreatePipeline();
                 pipeline.Commands.AddScript(cmd);
                 pipeline.Commands.Add("Out-String");
                 try
