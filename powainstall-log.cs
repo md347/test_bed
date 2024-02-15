@@ -29,6 +29,13 @@ public class Sample : System.Configuration.Install.Installer
 
         using (StreamWriter writer = new StreamWriter(outputFilePath, true))
         {
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                Console.WriteLine("Session ended.");
+                writer.Close();
+                runspace.Dispose();
+            };
+
             while (true)
             {
                 Console.Write(">");
